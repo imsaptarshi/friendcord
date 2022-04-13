@@ -124,7 +124,7 @@ const UserForm: NextPage = () => {
                   maxW="600px"
                   justify="center"
                   mt="6"
-                  py={{ base: "2", md: "0" }}
+                  py="2"
                   mr="-4"
                 >
                   {meta.preferences.map((data, key) => (
