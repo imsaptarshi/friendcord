@@ -18,7 +18,9 @@
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0",
-    "react-icons": "^4.3.1"
+    "react-feather": "^2.0.9",
+    "react-icons": "^4.3.1",
+    "react-tinder-card": "^1.4.5"
   },
   "devDependencies": {
     "@types/node": "17.0.23",

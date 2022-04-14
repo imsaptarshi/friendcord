@@ -22,7 +22,7 @@ const Home: NextPage = () => {
       <Image
         display={{ base: "none", lg: "block" }}
         src="/assets/background_gradient.png"
-        alt="deezfrens"
+        alt="friendcord"
         position="absolute"
         zIndex={0}
         left={0}
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
       <Image
         display={{ base: "none", md: "block", lg: "none" }}
         src="/assets/background_gradient_tablet.png"
-        alt="deezfrens"
+        alt="friendcord"
         position="absolute"
         zIndex={0}
         left={0}
@@ -44,7 +44,7 @@ const Home: NextPage = () => {
       <Image
         display={{ base: "block", md: "none" }}
         src="/assets/background_gradient_mobile.png"
-        alt="deezfrens"
+        alt="friendcord"
         position="absolute"
         zIndex={0}
         left={0}
@@ -66,7 +66,7 @@ const Home: NextPage = () => {
               _hover={{ bg: "brand.blurple" }}
               rounded="2xl"
             >
-              <Image src="/assets/brand_logo.svg" alt="deezfrens" w="40" />
+              <Image src="/assets/brand_logo.svg" alt="friendcord" w="40" />
             </Box>
           </Link>
           <motion.div

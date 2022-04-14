@@ -42,7 +42,7 @@ const UserForm: NextPage = () => {
       <Image
         display={{ base: "none", lg: "block" }}
         src="/assets/background_gradient.png"
-        alt="deezfrens"
+        alt="friendcord"
         position="absolute"
         zIndex={0}
         left={0}
@@ -53,7 +53,7 @@ const UserForm: NextPage = () => {
       <Image
         display={{ base: "none", md: "block", lg: "none" }}
         src="/assets/background_gradient_tablet.png"
-        alt="deezfrens"
+        alt="friendcord"
         position="absolute"
         zIndex={0}
         left={0}
@@ -64,7 +64,7 @@ const UserForm: NextPage = () => {
       <Image
         display={{ base: "block", md: "none" }}
         src="/assets/background_gradient_mobile.png"
-        alt="deezfrens"
+        alt="friendcord"
         position="absolute"
         zIndex={0}
         left={0}
@@ -226,7 +226,7 @@ const UserForm: NextPage = () => {
               <Flex direction="column" justify="center">
                 <Box textAlign="center">
                   <Text fontWeight="black" fontSize={{ base: "xl", md: "2xl" }}>
-                    sick {user?.username || "Anonymous"}!
+                    awsm {user?.username || "Anonymous"}!
                   </Text>
                   <Text
                     fontWeight="normal"
@@ -291,6 +291,7 @@ const UserForm: NextPage = () => {
                         setError(Error.NOT_ENOUGH_DATA);
                       } else {
                         //onboard user
+                        window.location.href = "/@me";
                       }
                     }}
                     _hover={{ transform: "scale(1.05)" }}
@@ -326,7 +327,7 @@ const UserForm: NextPage = () => {
       >
         <Link _hover={{}} _active={{}} _focus={{}} href="/">
           <Box bg="transparent" _hover={{ bg: "brand.blurple" }} rounded="2xl">
-            <Image src="/assets/brand_logo.svg" alt="deezfrens" w="40" />
+            <Image src="/assets/brand_logo.svg" alt="friendcord" w="40" />
           </Box>
         </Link>
       </Flex>
