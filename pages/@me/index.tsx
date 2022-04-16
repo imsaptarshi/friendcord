@@ -63,13 +63,26 @@ const Me: NextPage = () => {
         h="100vh"
       />
       <Box position="relative" zIndex={2} overflowY="auto">
-        <Flex direction="column" pt="10" w="100vw" h="100vh" align="center">
+        <Flex
+          direction="column"
+          pt="10"
+          w="100vw"
+          h="100vh"
+          align="center"
+          justify="center"
+        >
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <Flex direction="column" align="center" px={{ base: "6", md: "0" }}>
+            <Flex
+              direction="column"
+              align="center"
+              px={{ base: "6", md: "0" }}
+              mb={{ base: "20", xl: "32" }}
+              mt="10"
+            >
               {/*profile display*/}
               <Flex align="center" experimental_spaceX="4">
                 <Avatar
@@ -80,10 +93,10 @@ const Me: NextPage = () => {
                   transitionDuration="200ms"
                   cursor="pointer"
                   ring="3px"
-                  ringColor="whiteAlpha.700"
+                  ringColor="white"
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP6s-G2vbGV6-MbmR1eGUbNWiVcAFkwfZKdA&usqp=CAU"
                 />
-                <Flex direction="column" maxW="160px">
+                <Flex direction="column" maxW="180px">
                   <Text fontWeight="bold" fontSize="lg" isTruncated>
                     SoulNinja
                   </Text>
@@ -137,7 +150,7 @@ const Me: NextPage = () => {
                 </Button>
               </Flex>
               <Flex my="8">
-                <TinderCard>
+                <TinderCard preventSwipe={["up", "down"]} swipeThreshold={600}>
                   <ProfileCard />
                 </TinderCard>
               </Flex>

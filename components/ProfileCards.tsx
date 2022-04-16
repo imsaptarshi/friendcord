@@ -6,9 +6,10 @@ import { Heart, X } from "react-feather";
 export default function ProfileCard() {
   return (
     <Box
+      cursor="pointer"
       rounded="2xl"
       className="not-selectable"
-      bg="rgba(0, 0, 0, 0.39)"
+      bg="#293156"
       overflow="hidden"
       w="full"
       maxW="300px"
@@ -37,76 +38,99 @@ export default function ProfileCard() {
         <Text fontSize="10px" fontWeight="semibold" color="whiteAlpha.700">
           INTERESTS
         </Text>
-
-        <Flex mt="2">
-          <Flex
-            cursor="pointer"
-            align="center"
-            mr="2"
-            mb="3"
-            rounded="full"
-            p="1.5"
-            pr="4"
-            transitionDuration="200ms"
-            bg={"whiteAlpha.300"}
-          >
-            <AspectRatio ratio={1} w="5" mr="2">
-              <Image
-                src={meta.preferences[0].graphic}
-                rounded="full"
-                w="full"
-                alt="."
-              />
-            </AspectRatio>
-            <Text fontSize="xs" fontWeight="semibold">
-              {meta.preferences[0].topic}
-            </Text>
+        <Box
+          overflowY="auto"
+          maxH={{ base: "160px", lg: "144px" }}
+          minH={{ base: "160px", lg: "144px" }}
+        >
+          <Flex mt="2">
+            <Flex
+              cursor="pointer"
+              align="center"
+              mr="2"
+              mb="3"
+              rounded="full"
+              p="1.5"
+              pr="4"
+              transitionDuration="200ms"
+              bg={"whiteAlpha.300"}
+            >
+              <AspectRatio ratio={1} w="5" mr="2">
+                <Image
+                  src={meta.preferences[0].graphic}
+                  rounded="full"
+                  w="full"
+                  alt="."
+                />
+              </AspectRatio>
+              <Text fontSize="xs" fontWeight="semibold">
+                {meta.preferences[0].topic}
+              </Text>
+            </Flex>
           </Flex>
-        </Flex>
-        <Flex wrap="wrap">
-          <Flex
-            cursor="pointer"
-            align="center"
-            mr="2"
-            mb="3"
-            rounded="full"
-            p="1.5"
-            pr="4"
-            transitionDuration="200ms"
-            bg={"brand.blurple"}
-          >
-            <Box mr="2" ml="1.5" mt="1" mb="1.5">
-              <FaStar size="12px" />
-            </Box>
-            <Text fontSize="xs" fontWeight="semibold">
-              {"you both love coding"}
-            </Text>
+          <Flex wrap="wrap">
+            <Flex
+              cursor="pointer"
+              align="center"
+              mr="2"
+              mb="3"
+              rounded="full"
+              p="1.5"
+              pr="4"
+              transitionDuration="200ms"
+              bg={"brand.blurple"}
+            >
+              <Box mr="2" ml="1.5" mt="1" mb="1.5">
+                <FaStar size="12px" />
+              </Box>
+              <Text fontSize="xs" fontWeight="semibold">
+                {"you both love coding"}
+              </Text>
+            </Flex>
+            <Flex
+              cursor="pointer"
+              align="center"
+              mr="2"
+              mb="3"
+              rounded="full"
+              p="1.5"
+              pr="4"
+              transitionDuration="200ms"
+              bg={"brand.blurple"}
+            >
+              <Box mr="2" ml="1.5" mt="1" mb="1.5">
+                <FaStar size="12px" />
+              </Box>
+              <Text fontSize="xs" fontWeight="semibold">
+                {"you both love anime"}
+              </Text>
+            </Flex>
           </Flex>
-          <Flex
-            cursor="pointer"
-            align="center"
-            mr="2"
-            mb="3"
-            rounded="full"
-            p="1.5"
-            pr="4"
-            transitionDuration="200ms"
-            bg={"brand.blurple"}
-          >
-            <Box mr="2" ml="1.5" mt="1" mb="1.5">
-              <FaStar size="12px" />
-            </Box>
-            <Text fontSize="xs" fontWeight="semibold">
-              {"you both love anime"}
-            </Text>
-          </Flex>
-        </Flex>
+        </Box>
         <Box my="6">
           <Flex experimental_spaceX={6} justify="center">
-            <Box p="4" rounded="full" bg="whiteAlpha.400" color="white">
+            <Box
+              transitionDuration="200ms"
+              _hover={{ transform: "scale(1.05)", bg: "whiteAlpha.500" }}
+              _focus={{}}
+              _active={{ transform: "scale(0.9)" }}
+              p="4"
+              rounded="full"
+              bg="whiteAlpha.400"
+              color="white"
+            >
               <X strokeWidth="3px" />
             </Box>
-            <Box p="4" rounded="full" bg="brand.blurple" color="white">
+            <Box
+              transitionDuration="200ms"
+              p="4"
+              _hover={{ transform: "scale(1.05)" }}
+              _focus={{}}
+              _active={{ transform: "scale(0.9)" }}
+              rounded="full"
+              bg="brand.blurple"
+              color="white"
+            >
               <Heart fill="white" />
             </Box>
           </Flex>

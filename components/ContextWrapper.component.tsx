@@ -6,9 +6,9 @@ import { supabase } from "../utils/supabase";
 export default function ContextWrapper({ children }: any) {
   const { user, setUser } = User();
 
-  const getUser = async (uid: string) => {
-    const res = await discordApi.get("/users/" + uid);
-    console.log(res, uid);
+  const getUser = async () => {
+    const res = await discordApi.get("/api/user/me", { withCredentials: true });
+    console.log(res);
   };
 
   supabase.auth.onAuthStateChange(async () => {
@@ -16,10 +16,12 @@ export default function ContextWrapper({ children }: any) {
   });
 
   const authorizeUser = async () => {
-    const _user = await supabase.auth.user();
-    console.log(_user, user);
+    await getUser();
+
+    //const _user = await supabase.auth.user();
+    //console.log(_user, user);
     //await getUser(_user?.user_metadata.sub);
-    if (_user) {
+    /*if (_user) {
       setUser({
         uid: _user?.user_metadata.sub || _user?.user_metadata.provider_id,
         avatar: _user?.user_metadata.avatar_url,
@@ -31,12 +33,11 @@ export default function ContextWrapper({ children }: any) {
         liked: [],
         guilds: [],
         interests: [],
-      });
-    }
+      });*/
   };
 
   useEffect(() => {
-    //authorizeUser();
+    authorizeUser();
   }, []);
   return <>{children}</>;
 }
