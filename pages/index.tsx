@@ -104,7 +104,7 @@ const Home: NextPage = () => {
                   size="xl"
                   onClick={() => {
                     window.location.href =
-                      "https://discord.com/api/oauth2/authorize?client_id=961129187131924482&redirect_uri=https%3A%2F%2Ffrencord.herokuapp.com%2Fapi%2Fauth&response_type=code&scope=identify%20guilds";
+                      "https://discord.com/api/oauth2/authorize?client_id=961129187131924482&redirect_uri=http%3A%2F%2Flocalhost%3A1717%2Fapi%2Fauth&response_type=code&scope=identify%20guilds";
                   }}
                   _hover={{ transform: "scale(1.05)" }}
                   _focus={{}}

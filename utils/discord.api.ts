@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: "http://localhost:1717",
+    baseURL: "https://frencord.herokuapp.com/",
     withCredentials: true
 
 });
