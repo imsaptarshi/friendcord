@@ -8,11 +8,9 @@ import ContextWrapper from "../components/ContextWrapper.component";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
-      <ContextWrapper>
         <ChakraProvider theme={theme}>
           <Component {...pageProps} />
         </ChakraProvider>
-      </ContextWrapper>
     </UserProvider>
   );
 }
