@@ -19,13 +19,25 @@ import { meta } from "../utils/meta";
 import { FaArrowRight } from "react-icons/fa";
 import { Error } from "../utils/errors";
 import Head from "next/head";
+import discordApi from "../utils/discord.api";
 
 const UserForm: NextPage = () => {
   const { user } = User();
   const [preferences, setPreferences] = useState<Array<String>>([]);
-  const [pronoun, setPronoun] = useState<String | undefined>(undefined);
+  const [pronoun, setPronoun] = useState<String | undefined | any>(undefined);
   const [step, setStep] = useState<Number>(0);
   const [error, setError] = useState<any>(undefined);
+
+  const genders: any = {
+    "he/him": "male",
+    "she/her": "female",
+    "they/them": "non-binary",
+    "doesn't matter": "null",
+  };
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <Box
@@ -171,7 +183,12 @@ const UserForm: NextPage = () => {
                       }
                     >
                       <AspectRatio ratio={1} w={{ base: "7", md: "8" }} mr="2">
-                        <Image src={data.graphic} rounded="full" w="full" />
+                        <Image
+                          src={data.graphic}
+                          rounded="full"
+                          w="full"
+                          alt="frencord"
+                        />
                       </AspectRatio>
                       <Text
                         fontSize={{ base: "lg", md: "xl" }}
@@ -286,12 +303,21 @@ const UserForm: NextPage = () => {
                     mx="auto"
                     size="xl"
                     py="3"
-                    onClick={() => {
+                    onClick={async () => {
                       if (!pronoun) {
                         setError(Error.NOT_ENOUGH_DATA);
                       } else {
                         //onboard user
-                        window.location.href = "/@feed";
+                        console.log(preferences, genders[pronoun]);
+                        try {
+                          await discordApi.post("/api/user", {
+                            interests: preferences,
+                            gender: genders[pronoun],
+                          });
+                          window.location.href = "/@feed";
+                        } catch (e) {
+                          console.log(e);
+                        }
                       }
                     }}
                     _hover={{ transform: "scale(1.05)" }}

@@ -15,8 +15,19 @@ import { meta } from "../../utils/meta";
 import { FaSignOutAlt } from "react-icons/fa";
 import ProfileCard from "../../components/ProfileCards";
 import TinderCard from "react-tinder-card";
+import { useEffect } from "react";
+import discordApi from "../../utils/discord.api";
 
 const Me: NextPage = () => {
+  const getFeed = async () => {
+    const res = await discordApi.get("/api/feed");
+    console.log(res);
+  };
+
+  useEffect(() => {
+    getFeed();
+  }, []);
+
   return (
     <Box
       overflow="hidden"
@@ -84,79 +95,7 @@ const Me: NextPage = () => {
               mt="10"
             >
               {/*profile display*/}
-              <Flex align="center" experimental_spaceX="4">
-                <Avatar
-                  name="Sap"
-                  w="44px"
-                  h="44px"
-                  _hover={{ ring: "4px" }}
-                  transitionDuration="200ms"
-                  cursor="pointer"
-                  ring="3px"
-                  ringColor="white"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP6s-G2vbGV6-MbmR1eGUbNWiVcAFkwfZKdA&usqp=CAU"
-                />
-                <Flex direction="column" maxW="180px">
-                  <Text fontWeight="bold" fontSize="lg" isTruncated>
-                    SoulNinja
-                  </Text>
-                  <Text
-                    isTruncated
-                    fontWeight="semibold"
-                    color="whiteAlpha.800"
-                    fontSize="sm"
-                  >
-                    SoulNinja#5959
-                  </Text>
-                </Flex>
-                <Box
-                  p="2"
-                  rounded="xl"
-                  _hover={{ bg: "whiteAlpha.300" }}
-                  transitionDuration="200ms"
-                  cursor="pointer"
-                >
-                  <FaSignOutAlt size="20px" />
-                </Box>
-              </Flex>
-              <Flex experimental_spaceX="2" mt="6">
-                <Button
-                  _hover={{}}
-                  _active={{}}
-                  _focus={{}}
-                  fontWeight="bold"
-                  color="brand.blurple"
-                  py="4"
-                  px="8"
-                  bg="white"
-                  fontSize="sm"
-                  rounded="full"
-                  onClick={() => {
-                    window.location.href = "/@feed/matches";
-                  }}
-                >
-                  matches {"<3"}
-                </Button>
-                <Button
-                  _hover={{ bg: "whiteAlpha.500" }}
-                  _active={{}}
-                  _focus={{}}
-                  fontWeight="bold"
-                  color="white"
-                  py="4"
-                  px="8"
-                  bg="whiteAlpha.400"
-                  fontSize="sm"
-                  rounded="full"
-                >
-                  filter
-                </Button>
-              </Flex>
-              <Flex my="8">
-                <TinderCard preventSwipe={["up", "down"]} swipeThreshold={600}>
-                  <ProfileCard />
-                </TinderCard>
-              </Flex>
+              just few more hours until we go live
             </Flex>
           </motion.div>
         </Flex>
