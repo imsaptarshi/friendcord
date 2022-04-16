@@ -10,8 +10,8 @@ export const meta = {
             topic: "coding"
         },
         {
-            graphic: "/assets/preferences/lofi.png",
-            topic: "lofi"
+            graphic: "/assets/preferences/gaming.png",
+            topic: "gaming"
         },
         {
             graphic: "/assets/preferences/music.png",

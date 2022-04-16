@@ -131,6 +131,9 @@ const Me: NextPage = () => {
                   bg="white"
                   fontSize="sm"
                   rounded="full"
+                  onClick={() => {
+                    window.location.href = "/@feed/matches";
+                  }}
                 >
                   matches {"<3"}
                 </Button>

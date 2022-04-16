@@ -291,7 +291,7 @@ const UserForm: NextPage = () => {
                         setError(Error.NOT_ENOUGH_DATA);
                       } else {
                         //onboard user
-                        window.location.href = "/@me";
+                        window.location.href = "/@feed";
                       }
                     }}
                     _hover={{ transform: "scale(1.05)" }}
