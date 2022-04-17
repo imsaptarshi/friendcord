@@ -3,6 +3,8 @@ import { meta } from "./meta";
 
 export default axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_ENDPOINT || meta.api,
-    withCredentials: true
-
+    withCredentials: true,
+    headers: {
+        jwt: String(localStorage.getItem("jwt"))
+    }
 });
