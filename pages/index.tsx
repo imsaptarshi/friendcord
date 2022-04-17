@@ -5,8 +5,21 @@ import { signInWithDiscord, signout } from "../utils/auth";
 import { motion } from "framer-motion";
 import Head from "next/head";
 import { meta } from "../utils/meta";
+import { User } from "../providers/User.provider";
+import { useEffect } from "react";
 
 const Home: NextPage = () => {
+  const { user } = User();
+
+  useEffect(() => {
+    console.log(user);
+    if (user) {
+      if (user?.interests.length >= 3) {
+        window.location.href = "/@feed";
+      }
+    }
+  }, [user]);
+
   return (
     <Box
       overflow="hidden"
@@ -91,6 +104,7 @@ const Home: NextPage = () => {
                 <Text
                   fontWeight="normal"
                   mx="auto"
+                  mt="2"
                   fontSize={{ base: "sm", md: "xl" }}
                   color="whiteAlpha.700"
                 >

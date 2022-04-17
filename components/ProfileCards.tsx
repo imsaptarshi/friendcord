@@ -3,7 +3,7 @@ import { FaCross, FaExclamationCircle, FaHeart, FaStar } from "react-icons/fa";
 import { meta } from "../utils/meta";
 import { Heart, X } from "react-feather";
 
-export default function ProfileCard({ swipe, index }: any) {
+export default function ProfileCard({ swipe, index, switches }: any) {
   return (
     <Box
       shadow="xl"
