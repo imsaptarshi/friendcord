@@ -17,6 +17,7 @@ export default function handler(
     res.setHeader('Set-Cookie', serialize('jwt', String(token), {
         path: '/', httpOnly: true,
         maxAge: expireTime * 1000,
+        sameSite: "none"
     }));
     //localStorage.setItem("jwt", String(token))
     res.redirect(307, "/almost_there")
