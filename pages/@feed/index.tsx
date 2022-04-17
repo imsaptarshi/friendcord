@@ -27,7 +27,11 @@ import Loading from "../../components/Loading";
 const Me: NextPage = () => {
   const [tutorialStep, setTutorialStep] = useState(0);
   const getFeed = async () => {
-    const res = await discordApi.get("/api/feed");
+    const res = await discordApi.get("/api/feed", {
+      headers: {
+        allCookies: String(document.cookie),
+      },
+    });
     console.log(res);
   };
 
