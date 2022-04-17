@@ -134,7 +134,8 @@ const Me: NextPage = () => {
             w="100vw"
             h="100vh"
           />
-          {tutorialStep < 2 &&
+          {false &&
+            tutorialStep < 2 &&
             window.localStorage.getItem("friendcord-onboarding") !== "true" && (
               <Box
                 position={"absolute"}
@@ -247,14 +248,15 @@ const Me: NextPage = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <Flex
+                launching soon
+                {/*<Flex
                   direction="column"
                   align="center"
                   px={{ base: "6", md: "0" }}
                   mt={{ base: "0", md: "0", lg: "0", xl: "0" }}
                   mb={{ base: "10", md: "12", lg: "8", xl: "24" }}
                 >
-                  {/*profile display*/}
+              
                   <Flex align="center" experimental_spaceX="4">
                     <Avatar
                       name="Sap"
@@ -424,7 +426,7 @@ const Me: NextPage = () => {
                       </Box>
                     </Flex>
                   </Box>
-                </Flex>
+                </Flex>*/}
               </motion.div>
             </Flex>
           </Box>
