@@ -20,6 +20,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { Error } from "../utils/errors";
 import Head from "next/head";
 import discordApi from "../utils/discord.api";
+import ContextWrapper from "../components/ContextWrapper.component";
 
 const UserForm: NextPage = () => {
   const { user } = User();
@@ -40,6 +41,7 @@ const UserForm: NextPage = () => {
   }, [user]);
 
   return (
+    <ContextWrapper>
     <Box
       overflow="hidden"
       w="100vw"
@@ -358,6 +360,7 @@ const UserForm: NextPage = () => {
         </Link>
       </Flex>
     </Box>
+</ContextWrapper>
   );
 };
 
