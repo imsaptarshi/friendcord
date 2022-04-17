@@ -1,5 +1,7 @@
 export const meta = {
     title: "friendcord",
+    auth_redirect_url: "https://discord.com/api/oauth2/authorize?client_id=961129187131924482&redirect_uri=http%3A%2F%2Flocalhost%3A1717%2Fapi%2Fauth&response_type=code&scope=identify%20guilds",
+    api: "http://localhost:1717",
     preferences: [
         {
             graphic: "/assets/preferences/anime.png",

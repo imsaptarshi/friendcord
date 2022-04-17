@@ -3,9 +3,10 @@ import { FaCross, FaExclamationCircle, FaHeart, FaStar } from "react-icons/fa";
 import { meta } from "../utils/meta";
 import { Heart, X } from "react-feather";
 
-export default function ProfileCard() {
+export default function ProfileCard({ swipe, index }: any) {
   return (
     <Box
+      shadow="xl"
       cursor="pointer"
       rounded="2xl"
       className="not-selectable"
@@ -28,7 +29,7 @@ export default function ProfileCard() {
       </Box>
       <Flex px="6" mt="4" align="center" experimental_spaceX="2">
         <Text fontWeight="bold" fontSize="xl" maxW="140px" isTruncated>
-          Sap#6969
+          Sap#6969{index}
         </Text>
         <Text fontSize="sm" color="whiteAlpha.600">
           he/him
@@ -108,9 +109,13 @@ export default function ProfileCard() {
           </Flex>
         </Box>
         <Box my="6">
-          <Flex experimental_spaceX={6} justify="center">
+          <Flex experimental_spaceX={6} justify="center" opacity={0}>
             <Box
               transitionDuration="200ms"
+              onClick={() => {
+                const left: any = document.getElementById("left");
+                left.click();
+              }}
               _hover={{ transform: "scale(1.05)", bg: "whiteAlpha.500" }}
               _focus={{}}
               _active={{ transform: "scale(0.9)" }}
@@ -122,6 +127,7 @@ export default function ProfileCard() {
               <X strokeWidth="3px" />
             </Box>
             <Box
+              onClick={() => swipe("right")}
               transitionDuration="200ms"
               p="4"
               _hover={{ transform: "scale(1.05)" }}

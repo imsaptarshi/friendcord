@@ -64,8 +64,15 @@ const Me: NextPage = () => {
         w="100vw"
         h="100vh"
       />
-      <Box position="relative" zIndex={2} overflowY="auto">
-        <Flex direction="column" pt="10" w="100vw" h="100vh" align="center">
+      <Box position="relative" zIndex={2}>
+        <Flex
+          direction="column"
+          pt="10"
+          w="100vw"
+          h="100vh"
+          align="center"
+          overflowY="auto"
+        >
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

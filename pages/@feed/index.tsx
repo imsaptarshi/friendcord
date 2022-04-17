@@ -15,8 +15,11 @@ import { meta } from "../../utils/meta";
 import { FaSignOutAlt } from "react-icons/fa";
 import ProfileCard from "../../components/ProfileCards";
 import TinderCard from "react-tinder-card";
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import discordApi from "../../utils/discord.api";
+import React from "react";
+import { User } from "../../providers/User.provider";
+import { Heart, X } from "react-feather";
 
 const Me: NextPage = () => {
   const getFeed = async () => {
@@ -24,9 +27,51 @@ const Me: NextPage = () => {
     console.log(res);
   };
 
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const [isFeedOver, setIsFeedOver] = useState(false);
+  useEffect(() => {
+    if (currentIndex < 0) {
+      setIsFeedOver(true);
+    }
+  }, [currentIndex]);
+  const canSwipe = currentIndex >= 0;
+  const { user } = User();
+  const currentIndexRef: any = useRef<any>(currentIndex);
   useEffect(() => {
     getFeed();
   }, []);
+
+  const childRefs: any = useMemo(
+    () =>
+      Array(2)
+        .fill(0)
+        .map((i) => React.createRef()),
+    []
+  );
+
+  const swipe = async (dir: any) => {
+    await childRefs[currentIndex].current.swipe(dir);
+
+    // Swipe the card!
+  };
+
+  const updateCurrentIndex = (val: any) => {
+    setCurrentIndex(val);
+    currentIndexRef.current = val;
+  };
+
+  const outOfFrame = (idx: any) => {
+    console.log(`(${idx}) left the screen!`, currentIndexRef.current);
+    // handle the case in which go back is pressed before card goes outOfFrame
+    currentIndexRef.current >= idx && childRefs[idx].current.restoreCard();
+    // TODO: when quickly swipe and restore multiple times the same card,
+    // it happens multiple outOfFrame events are queued and the card disappear
+    // during latest swipes. Only the last outOfFrame event should be considered valid
+  };
+
+  const swiped = (index: any) => {
+    updateCurrentIndex(index - 1);
+  };
 
   return (
     <Box
@@ -91,11 +136,140 @@ const Me: NextPage = () => {
               direction="column"
               align="center"
               px={{ base: "6", md: "0" }}
-              mb={{ base: "20", xl: "32" }}
+              mb={{ base: "40", lg: "20", xl: "32" }}
               mt="10"
             >
               {/*profile display*/}
-              just few more hours until we go live
+              <Flex align="center" experimental_spaceX="4">
+                <Avatar
+                  name="Sap"
+                  w="44px"
+                  h="44px"
+                  _hover={{ ring: "4px" }}
+                  transitionDuration="200ms"
+                  cursor="pointer"
+                  ring="3px"
+                  ringColor="white"
+                  src={user?.avatar}
+                />
+                <Flex direction="column" maxW="160px" minW="160px">
+                  <Text fontWeight="bold" fontSize="lg" isTruncated>
+                    {user?.username}
+                  </Text>
+                  <Text
+                    isTruncated
+                    fontWeight="semibold"
+                    color="whiteAlpha.800"
+                    fontSize="sm"
+                  >
+                    {user?.name}
+                  </Text>
+                </Flex>
+                <Box
+                  p="2"
+                  rounded="xl"
+                  _hover={{ bg: "whiteAlpha.300" }}
+                  transitionDuration="200ms"
+                  cursor="pointer"
+                >
+                  <FaSignOutAlt size="20px" />
+                </Box>
+              </Flex>
+              <Flex experimental_spaceX="2" mt="6" maxW="300px" minW="300px">
+                <Button
+                  _hover={{}}
+                  _active={{}}
+                  _focus={{}}
+                  fontWeight="bold"
+                  color="brand.blurple"
+                  py="4"
+                  px="8"
+                  bg="white"
+                  fontSize="sm"
+                  rounded="full"
+                  w="full"
+                  onClick={() => {
+                    window.location.href = "/@feed/matches";
+                  }}
+                >
+                  matches {"<3"}
+                </Button>
+                <Button
+                  w="full"
+                  _hover={{ bg: "whiteAlpha.500" }}
+                  _active={{}}
+                  _focus={{}}
+                  fontWeight="bold"
+                  color="white"
+                  py="4"
+                  px="8"
+                  bg="whiteAlpha.400"
+                  fontSize="sm"
+                  rounded="full"
+                >
+                  filter
+                </Button>
+              </Flex>
+              <Box
+                my="8"
+                position="relative"
+                minH="450px"
+                mx="auto"
+                maxW="300px"
+                minW="300px"
+              >
+                {[0, 1].map((data, key) => (
+                  <TinderCard
+                    key={key}
+                    className="swipe"
+                    ref={childRefs[key]}
+                    onCardLeftScreen={() => outOfFrame(key)}
+                    onSwipe={() => swiped(key)}
+                    preventSwipe={["up", "down"]}
+                  >
+                    <ProfileCard swipe={swipe} index={key} />
+                  </TinderCard>
+                ))}
+
+                <Flex
+                  experimental_spaceX={6}
+                  justify="center"
+                  opacity={isFeedOver ? "0" : "1"}
+                  position="absolute"
+                  zIndex="2"
+                  bottom={{ base: "2", lg: "4" }}
+                  w="full"
+                >
+                  <Box
+                    cursor="pointer"
+                    transitionDuration="200ms"
+                    onClick={() => swipe("left")}
+                    _hover={{ transform: "scale(1.05)", bg: "whiteAlpha.500" }}
+                    _focus={{}}
+                    _active={{ transform: "scale(0.9)" }}
+                    p="4"
+                    rounded="full"
+                    bg="whiteAlpha.400"
+                    color="white"
+                  >
+                    <X strokeWidth="3px" />
+                  </Box>
+                  <Box
+                    cursor="pointer"
+                    onClick={() => swipe("right")}
+                    transitionDuration="200ms"
+                    p="4"
+                    _hover={{ transform: "scale(1.05)" }}
+                    _focus={{}}
+                    _active={{ transform: "scale(0.9)" }}
+                    rounded="full"
+                    bg="brand.blurple"
+                    color="white"
+                  >
+                    <Heart fill="white" />
+                  </Box>
+                </Flex>
+              </Box>
             </Flex>
           </motion.div>
         </Flex>

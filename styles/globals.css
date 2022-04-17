@@ -18,3 +18,7 @@
   background: #ffffff42;
   border-radius: 10px;
 }
+
+.swipe {
+  position: absolute;
+}
