@@ -338,10 +338,18 @@ const UserForm: NextPage = () => {
                             //onboard user
                             console.log(preferences, genders[pronoun]);
                             try {
-                              await discordApi.post("/api/user", {
-                                interests: preferences,
-                                gender: genders[pronoun],
-                              });
+                              await discordApi.post(
+                                "/api/user",
+                                {
+                                  interests: preferences,
+                                  gender: genders[pronoun],
+                                },
+                                {
+                                  headers: {
+                                    allCookies: String(document.cookie),
+                                  },
+                                }
+                              );
                               window.location.href = "/@feed";
                             } catch (e) {
                               console.log(e);
