@@ -248,8 +248,7 @@ const Me: NextPage = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                launching soon
-                {/*<Flex
+                {<Flex
                   direction="column"
                   align="center"
                   px={{ base: "6", md: "0" }}
@@ -426,7 +425,7 @@ const Me: NextPage = () => {
                       </Box>
                     </Flex>
                   </Box>
-                </Flex>*/}
+                </Flex>}
               </motion.div>
             </Flex>
           </Box>
