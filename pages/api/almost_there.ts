@@ -15,9 +15,9 @@ export default function handler(
     const { token } = req.query;
     console.log(token)
     res.setHeader('Set-Cookie', serialize('jwt', String(token), {
-        path: '/', httpOnly: true,
+        httpOnly: false,
+        path: "/",
         maxAge: expireTime * 1000,
-        sameSite: "lax"
     }));
 
     //localStorage.setItem("jwt", String(token))

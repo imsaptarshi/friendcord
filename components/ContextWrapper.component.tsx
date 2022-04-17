@@ -1,3 +1,4 @@
+import { getCookie } from "cookies-next";
 import { useEffect } from "react";
 import { User } from "../providers/User.provider";
 import discordApi from "../utils/discord.api";
@@ -7,7 +8,9 @@ export default function ContextWrapper({ children }: any) {
   const { user, setUser } = User();
 
   const getUser = async () => {
-    const res = await discordApi.get("/api/user/me");
+    const res = await discordApi.get("/api/user/me", {
+      headers: { allCookies: String(document.cookie) },
+    });
     return res;
   };
 
