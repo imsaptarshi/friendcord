@@ -88,19 +88,31 @@ const Me: NextPage = () => {
   const outOfFrame = (idx: any, dir: any) => {
     console.log(`(${idx}) left the screen!`, currentIndexRef.current);
     // handle the case in which go back is pressed before card goes outOfFrame
-    currentIndexRef.current >= idx && childRefs[idx].current.restoreCard();
+    //currentIndexRef.current >= idx && childRefs[idx].current.restoreCard();
     // TODO: when quickly swipe and restore multiple times the same card,
     // it happens multiple outOfFrame events are queued and the card disappear
     // during latest swipes. Only the last outOfFrame event should be considered valid
   };
 
-  const swiped = (index: any, dir: any) => {
+  const swiped = async (index: any, dir: any) => {
     console.log(dir);
     if (dir === "right") {
       console.log(feed[index]);
       if (feed[index]?.liked.includes(user?.uid)) {
         onOpen();
       }
+      const res = await discordApi.get("/api/like/" + feed[index].discord, {
+        headers: {
+          allCookies: String(document.cookie),
+        },
+      });
+      console.log(res);
+    } else if (dir === "left") {
+      await discordApi.get("/api/dislike/" + feed[index]?.discord, {
+        headers: {
+          allCookies: String(document.cookie),
+        },
+      });
     }
     updateCurrentIndex(index - 1);
   };
