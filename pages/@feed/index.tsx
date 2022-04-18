@@ -381,6 +381,7 @@ const Me: NextPage = () => {
                       bg="whiteAlpha.400"
                       fontSize="sm"
                       rounded="full"
+                      disabled
                     >
                       filter
                     </Button>
