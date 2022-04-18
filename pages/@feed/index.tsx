@@ -23,6 +23,7 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaEnvelope,
+  FaExternalLinkAlt,
   FaSignOutAlt,
 } from "react-icons/fa";
 import ProfileCard from "../../components/ProfileCards";
@@ -31,7 +32,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import discordApi from "../../utils/discord.api";
 import React from "react";
 import { User } from "../../providers/User.provider";
-import { Heart, X } from "react-feather";
+import { ExternalLink, Heart, X } from "react-feather";
 import CustomButton from "../../components/CustomButton.component";
 import Loading from "../../components/Loading";
 
@@ -359,6 +360,7 @@ const Me: NextPage = () => {
                       color="brand.blurple"
                       py="4"
                       px="8"
+                      position="relative"
                       bg="white"
                       fontSize="sm"
                       rounded="full"
@@ -367,6 +369,19 @@ const Me: NextPage = () => {
                         window.location.href = "/@feed/matches";
                       }}
                     >
+                      <Box
+                        pos="absolute"
+                        top="-2"
+                        right="0"
+                        ring="2px"
+                        color="white"
+                        ringColor="white"
+                        bg="brand.blurple"
+                        rounded="full"
+                        p="1"
+                      >
+                        <ExternalLink size="14px" />
+                      </Box>
                       matches {"<3"}
                     </Button>
                     <Button
