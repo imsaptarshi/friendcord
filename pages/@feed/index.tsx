@@ -18,7 +18,13 @@ import type { NextPage } from "next";
 import { motion } from "framer-motion";
 import Head from "next/head";
 import { meta } from "../../utils/meta";
-import { FaArrowRight, FaEnvelope, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaChevronDown,
+  FaChevronUp,
+  FaEnvelope,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import ProfileCard from "../../components/ProfileCards";
 import TinderCard from "react-tinder-card";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -77,6 +83,7 @@ const Me: NextPage = () => {
   }, []);
 
   const [childRefs, setChildRefs]: any = useState<any>(undefined);
+  const [startedScrolling, setStartedScrolling] = useState(false);
 
   const swipe = async (dir: any) => {
     if (dir === "right") {
@@ -124,6 +131,7 @@ const Me: NextPage = () => {
 
   const swiped = async (index: any, dir: any, data: any) => {
     console.log(dir);
+    setStartedScrolling(false);
     updateCurrentIndex(index - 1);
     if (dir === "right") {
       document.getElementById("right")?.click();
@@ -474,6 +482,57 @@ const Me: NextPage = () => {
                     maxW="300px"
                     minW="300px"
                   >
+                    {
+                      <>
+                        {!isFeedOver && (
+                          <>
+                            {startedScrolling && (
+                              <Box
+                                display={{ base: "block", lg: "none" }}
+                                position="absolute"
+                                rounded="full"
+                                zIndex={10}
+                                bg="whiteAlpha.200"
+                                p="2"
+                                _hover={{ bg: "whiteAlpha.300" }}
+                                right="3"
+                                top="47%"
+                                onClick={() => {
+                                  const el: any = document.getElementById(
+                                    "interests" + currentIndex
+                                  );
+                                  el.scrollTop -= 50;
+                                }}
+                              >
+                                <FaChevronUp size="10px" />
+                              </Box>
+                            )}
+                            <Box
+                              display={{ base: "block", lg: "none" }}
+                              position="absolute"
+                              rounded="full"
+                              bg="whiteAlpha.200"
+                              p="2"
+                              bottom="23%"
+                              zIndex={10}
+                              _hover={{ bg: "whiteAlpha.300" }}
+                              onClick={() => {
+                                if (!startedScrolling) {
+                                  setStartedScrolling(true);
+                                }
+                                const el: any = document.getElementById(
+                                  "interests" + currentIndex
+                                );
+                                el.scrollTop += 50;
+                              }}
+                              right="3"
+                            >
+                              <FaChevronDown size="10px" />
+                            </Box>
+                          </>
+                        )}
+                      </>
+                    }
                     {childRefs &&
                       feed.map((data: any, key: any) => (
                         <TinderCard
@@ -488,7 +547,7 @@ const Me: NextPage = () => {
                             data={data}
                             currentIndex={currentIndex}
                             swipe={swipe}
-                            index={key}
+                            idx={key}
                           />
                         </TinderCard>
                       ))}

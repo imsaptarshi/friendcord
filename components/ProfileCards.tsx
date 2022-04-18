@@ -13,6 +13,8 @@ import {
 } from "@chakra-ui/react";
 import {
   FaArrowRight,
+  FaChevronDown,
+  FaChevronUp,
   FaCross,
   FaEnvelope,
   FaExclamationCircle,
@@ -29,7 +31,7 @@ import CustomButton from "./CustomButton.component";
 
 export default function ProfileCard({
   swipe,
-  index,
+  idx,
   data,
   currentIndex,
   switches,
@@ -76,6 +78,7 @@ export default function ProfileCard({
     <>
       {data && (
         <Box
+          position="relative"
           shadow={"lg"}
           cursor="pointer"
           rounded="2xl"
@@ -109,44 +112,23 @@ export default function ProfileCard({
             <Text fontSize="10px" fontWeight="semibold" color="whiteAlpha.700">
               INTERESTS
             </Text>
-            <Box
-              className="interests"
-              overflowY="auto"
-              maxH={{ base: "160px", lg: "144px" }}
-              mr="-6"
-              pr="6"
-              minH={{ base: "160px", lg: "144px" }}
-            >
-              <Flex mt="2" wrap="wrap">
-                {data?.interests.map((data_: any, key: any) => (
-                  <>
-                    {" "}
-                    <Flex
-                      key={key}
-                      cursor="pointer"
-                      align="center"
-                      mr="2"
-                      mb="3"
-                      rounded="full"
-                      p="1.5"
-                      pr="4"
-                      transitionDuration="200ms"
-                      bg={"whiteAlpha.300"}
-                    >
-                      <AspectRatio ratio={1} w="5" mr="2">
-                        <Image
-                          src={`/assets/preferences/${data_}.png`}
-                          rounded="full"
-                          w="full"
-                          alt="."
-                        />
-                      </AspectRatio>
-                      <Text fontSize="xs" fontWeight="semibold">
-                        {data_}
-                      </Text>
-                    </Flex>
-                    {data?.commonInterests?.includes(data_) && (
+            <Box w="full">
+              {" "}
+              <Box
+                className="interests"
+                id={"interests" + idx}
+                overflowY="auto"
+                scrollBehavior="smooth"
+                maxH={{ base: "160px", lg: "144px" }}
+                mr="-6"
+                pr="6"
+                minH={{ base: "160px", lg: "144px" }}
+              >
+                <Flex mt="2" wrap="wrap">
+                  {data?.interests.map((data_: any, key: any) => (
+                    <>
                       <Flex
+                        key={key}
                         cursor="pointer"
                         align="center"
                         mr="2"
@@ -155,19 +137,44 @@ export default function ProfileCard({
                         p="1.5"
                         pr="4"
                         transitionDuration="200ms"
-                        bg={"brand.blurple"}
+                        bg={"whiteAlpha.300"}
                       >
-                        <Box mr="2" ml="1.5" mt="1" mb="1.5">
-                          <FaStar size="12px" />
-                        </Box>
+                        <AspectRatio ratio={1} w="5" mr="2">
+                          <Image
+                            src={`/assets/preferences/${data_}.png`}
+                            rounded="full"
+                            w="full"
+                            alt="."
+                          />
+                        </AspectRatio>
                         <Text fontSize="xs" fontWeight="semibold">
-                          you both love {data_}
+                          {data_}
                         </Text>
                       </Flex>
-                    )}
-                  </>
-                ))}
-              </Flex>
+                      {data?.commonInterests?.includes(data_) && (
+                        <Flex
+                          cursor="pointer"
+                          align="center"
+                          mr="2"
+                          mb="3"
+                          rounded="full"
+                          p="1.5"
+                          pr="4"
+                          transitionDuration="200ms"
+                          bg={"brand.blurple"}
+                        >
+                          <Box mr="2" ml="1.5" mt="1" mb="1.5">
+                            <FaStar size="12px" />
+                          </Box>
+                          <Text fontSize="xs" fontWeight="semibold">
+                            you both love {data_}
+                          </Text>
+                        </Flex>
+                      )}
+                    </>
+                  ))}
+                </Flex>
+              </Box>
             </Box>
             <Box my="6">
               <Flex experimental_spaceX={6} justify="center" opacity={0}>
