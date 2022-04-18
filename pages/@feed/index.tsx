@@ -179,8 +179,7 @@ const Me: NextPage = () => {
             w="100vw"
             h="100vh"
           />
-          {false &&
-            tutorialStep < 2 &&
+          {tutorialStep < 2 &&
             window.localStorage.getItem("friendcord-onboarding") !== "true" && (
               <Box
                 position={"absolute"}
@@ -293,7 +292,7 @@ const Me: NextPage = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                {/* <Flex
+                <Flex
                   direction="column"
                   align="center"
                   px={{ base: "6", md: "0" }}
@@ -573,8 +572,7 @@ const Me: NextPage = () => {
                       </Box>
                     </Flex>
                   </Box>
-                </Flex>*/}
-                coming soon
+                </Flex>
               </motion.div>
             </Flex>
           </Box>
