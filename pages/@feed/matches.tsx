@@ -17,8 +17,25 @@ import ProfileCard from "../../components/ProfileCards";
 import TinderCard from "react-tinder-card";
 import MatchedCard from "../../components/MatchedCard";
 import { CornerLeftUp, CornerUpLeft } from "react-feather";
+import discordApi from "../../utils/discord.api";
+import { useEffect, useState } from "react";
 
 const Me: NextPage = () => {
+  const [matches, setMatches] = useState<any>(undefined);
+  const getMatches = async () => {
+    const res = await discordApi.get("/api/matches", {
+      headers: {
+        allCookies: String(document.cookie),
+      },
+    });
+    console.log(res.data.data);
+    setMatches(res.data.data);
+  };
+
+  useEffect(() => {
+    getMatches();
+  }, []);
+
   return (
     <Box
       overflow="hidden"

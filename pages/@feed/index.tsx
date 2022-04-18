@@ -5,15 +5,20 @@ import {
   Flex,
   Image,
   Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
   ScaleFade,
   SlideFade,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { motion } from "framer-motion";
 import Head from "next/head";
 import { meta } from "../../utils/meta";
-import { FaArrowRight, FaSignOutAlt } from "react-icons/fa";
+import { FaArrowRight, FaEnvelope, FaSignOutAlt } from "react-icons/fa";
 import ProfileCard from "../../components/ProfileCards";
 import TinderCard from "react-tinder-card";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -26,16 +31,18 @@ import Loading from "../../components/Loading";
 
 const Me: NextPage = () => {
   const [tutorialStep, setTutorialStep] = useState(0);
+  const [feed, setFeed] = useState<any>(undefined);
   const getFeed = async () => {
     const res = await discordApi.get("/api/feed", {
       headers: {
         allCookies: String(document.cookie),
       },
     });
-    console.log(res);
+    console.log(res.data.data);
+    setFeed(res.data.data);
   };
 
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState<any>(0);
   const [isFeedOver, setIsFeedOver] = useState(false);
   useEffect(() => {
     if (tutorialStep > 1) {
@@ -48,33 +55,37 @@ const Me: NextPage = () => {
       setIsFeedOver(true);
     }
   }, [currentIndex]);
+
+  useEffect(() => {
+    updateCurrentIndex(feed?.length - 1);
+    let l: any = [];
+    feed?.forEach((data: any) => {
+      l.push(React.createRef());
+    });
+    setChildRefs(l);
+  }, [feed]);
   const canSwipe = currentIndex >= 0;
   const { user } = User();
   const currentIndexRef: any = useRef<any>(currentIndex);
+
   useEffect(() => {
     getFeed();
   }, []);
 
-  const childRefs: any = useMemo(
-    () =>
-      Array(2)
-        .fill(0)
-        .map((i) => React.createRef()),
-    []
-  );
+  const [childRefs, setChildRefs]: any = useState([]);
 
   const swipe = async (dir: any) => {
     await childRefs[currentIndex].current.swipe(dir);
 
     // Swipe the card!
   };
-
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const updateCurrentIndex = (val: any) => {
     setCurrentIndex(val);
     currentIndexRef.current = val;
   };
 
-  const outOfFrame = (idx: any) => {
+  const outOfFrame = (idx: any, dir: any) => {
     console.log(`(${idx}) left the screen!`, currentIndexRef.current);
     // handle the case in which go back is pressed before card goes outOfFrame
     currentIndexRef.current >= idx && childRefs[idx].current.restoreCard();
@@ -83,13 +94,20 @@ const Me: NextPage = () => {
     // during latest swipes. Only the last outOfFrame event should be considered valid
   };
 
-  const swiped = (index: any) => {
+  const swiped = (index: any, dir: any) => {
+    console.log(dir);
+    if (dir === "right") {
+      console.log(feed[index]);
+      if (feed[index]?.liked.includes(user?.uid)) {
+        onOpen();
+      }
+    }
     updateCurrentIndex(index - 1);
   };
 
   return (
     <>
-      {user ? (
+      {user && feed ? (
         <Box
           overflow="hidden"
           w="100vw"
@@ -134,8 +152,7 @@ const Me: NextPage = () => {
             w="100vw"
             h="100vh"
           />
-          {false &&
-            tutorialStep < 2 &&
+          {tutorialStep < 2 &&
             window.localStorage.getItem("friendcord-onboarding") !== "true" && (
               <Box
                 position={"absolute"}
@@ -248,15 +265,13 @@ const Me: NextPage = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                launching soon
-                {/*<Flex
+                <Flex
                   direction="column"
                   align="center"
                   px={{ base: "6", md: "0" }}
                   mt={{ base: "0", md: "0", lg: "0", xl: "0" }}
                   mb={{ base: "10", md: "12", lg: "8", xl: "24" }}
                 >
-              
                   <Flex align="center" experimental_spaceX="4">
                     <Avatar
                       name="Sap"
@@ -332,30 +347,114 @@ const Me: NextPage = () => {
                       filter
                     </Button>
                   </Flex>
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent
+                      bg="blackAlpha.700"
+                      border="4px"
+                      borderColor="brand.blurple"
+                      backdropFilter="blur(4px)"
+                      color="white"
+                      rounded="3xl"
+                    >
+                      <ModalBody>
+                        <Flex
+                          justify="center"
+                          w="full"
+                          my="8"
+                          direction="column"
+                          align="center"
+                        >
+                          <Text fontSize="2xl" fontWeight="bold">
+                            👀 {"it's"} a match
+                          </Text>
+                          <Flex mt="10">
+                            <Avatar
+                              ring="4px"
+                              ringColor="white"
+                              w="70px"
+                              h="70px"
+                              name={user?.username || "Anonymous"}
+                              src={user?.avatar}
+                            />
+                            <Avatar
+                              ring="4px"
+                              ringColor="white"
+                              w="70px"
+                              h="70px"
+                              name={
+                                feed[currentIndex + 1]?.username || "Anonymous"
+                              }
+                              src={feed[currentIndex + 1]?.image}
+                            />
+                          </Flex>
+                          <Flex direction="column" mt="10">
+                            <CustomButton
+                              mx="auto"
+                              size="xl"
+                              py="3"
+                              onClick={() => {}}
+                              _hover={{ transform: "scale(1.05)" }}
+                              _focus={{}}
+                              _active={{ transform: "scale(0.9)" }}
+                              fontSize="lg"
+                              leftIcon={<FaEnvelope />}
+                            >
+                              dm on discord
+                            </CustomButton>
+                            <CustomButton
+                              mx="auto"
+                              mt="2"
+                              size="xl"
+                              py="3"
+                              onClick={onClose}
+                              _hover={{ transform: "scale(1.05)" }}
+                              _focus={{}}
+                              _active={{ transform: "scale(0.9)" }}
+                              fontSize="lg"
+                              bg="transparent"
+                              color="white"
+                            >
+                              continue swiping
+                            </CustomButton>
+                          </Flex>
+                        </Flex>
+                      </ModalBody>
+                    </ModalContent>
+                  </Modal>
                   <Box
-                    my="8"
+                    my="6"
                     position="relative"
                     minH="450px"
                     mx="auto"
                     maxW="300px"
                     minW="300px"
                   >
-                    {[0, 1].map((data, key) => (
+                    {feed.map((data: any, key: any) => (
                       <TinderCard
                         key={key}
                         className="swipe"
                         ref={childRefs[key]}
-                        onCardLeftScreen={() => outOfFrame(key)}
-                        onSwipe={() => swiped(key)}
+                        onCardLeftScreen={(dir) => outOfFrame(key, dir)}
+                        onSwipe={(dir) => swiped(key, dir)}
                         preventSwipe={["up", "down"]}
                       >
-                        <ProfileCard swipe={swipe} index={key} />
+                        <ProfileCard
+                          data={data}
+                          currentIndex={currentIndex}
+                          swipe={swipe}
+                          index={key}
+                        />
                       </TinderCard>
                     ))}
                     {isFeedOver && (
                       <motion.div
-                        initial={{ y: -100 }}
-                        animate={{ y: 0, speed: 100000 }}
+                        initial={{ y: -100, opacity: 0 }}
+                        animate={{
+                          y: 0,
+                          opacity: 1,
+                        }}
+                        transition={{ delay: 0.3, duration: 0.3 }}
                       >
                         <Flex
                           px={{ base: "4", md: "0" }}
@@ -426,7 +525,7 @@ const Me: NextPage = () => {
                       </Box>
                     </Flex>
                   </Box>
-                </Flex>*/}
+                </Flex>
               </motion.div>
             </Flex>
           </Box>
