@@ -153,7 +153,15 @@ const Home: NextPage = () => {
         textAlign="center"
         w="full"
       >
-        served by <Link>@sapling</Link> & <Link>@soul</Link> with {"<"}3
+        served by{" "}
+        <Link isExternal href="https://twitter.com/saplingjk">
+          @sap
+        </Link>{" "}
+        &{" "}
+        <Link isExternal href="https://twitter.com/_soulninja">
+          @soulninja
+        </Link>{" "}
+        with {"<"}3
       </Text>
     </Box>
   );
