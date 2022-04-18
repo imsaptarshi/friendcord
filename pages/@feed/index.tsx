@@ -50,7 +50,13 @@ const Me: NextPage = () => {
     console.log("last feed", feed);
     console.log(res.data.data, "AGAIN");
     setFeed(undefined);
-    setFeed(res.data.data);
+    let k: any = [];
+    res.data.data.forEach((data: any) => {
+      if (data?.interests.length >= 3) {
+        k.push(data);
+      }
+    });
+    setFeed(k);
   };
 
   const [currentIndex, setCurrentIndex] = useState<any>(0);
