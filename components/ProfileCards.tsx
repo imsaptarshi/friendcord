@@ -110,6 +110,7 @@ export default function ProfileCard({
               INTERESTS
             </Text>
             <Box
+              className="interests"
               overflowY="auto"
               maxH={{ base: "160px", lg: "144px" }}
               mr="-6"

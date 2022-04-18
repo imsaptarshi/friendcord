@@ -82,9 +82,12 @@ const Me: NextPage = () => {
     if (dir === "right") {
       console.log(feed[currentIndex]?.liked, feed[currentIndex]?.name);
       console.log(feed);
-
-      if (feed[currentIndex]?.liked.includes(user?.uid)) {
-        onOpen();
+      try {
+        if (feed[currentIndex]?.liked?.includes(user?.uid)) {
+          onOpen();
+        }
+      } catch (e) {
+        console.log(e);
       }
       await childRefs[currentIndex].current.swipe(dir);
       await discordApi.get("/api/like/" + feed[currentIndex]?.discord, {
