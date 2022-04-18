@@ -32,13 +32,17 @@ import Loading from "../../components/Loading";
 const Me: NextPage = () => {
   const [tutorialStep, setTutorialStep] = useState(0);
   const [feed, setFeed] = useState<any>(undefined);
+  const [copied, setCopied] = useState(false);
+
   const getFeed = async () => {
     const res = await discordApi.get("/api/feed", {
       headers: {
         allCookies: String(document.cookie),
       },
     });
-    console.log(res.data.data);
+    console.log("last feed", feed);
+    console.log(res.data.data, "AGAIN");
+    setFeed(undefined);
     setFeed(res.data.data);
   };
 
@@ -51,17 +55,17 @@ const Me: NextPage = () => {
   }, [tutorialStep]);
 
   useEffect(() => {
-    if (currentIndex < 0) {
+    if (currentIndex < 0 || (feed && feed?.length === 0)) {
       setIsFeedOver(true);
     }
-  }, [currentIndex]);
+  }, [currentIndex, feed]);
 
   useEffect(() => {
     updateCurrentIndex(feed?.length - 1);
     let l: any = [];
-    feed?.forEach((data: any) => {
+    for (let i = 0; i < feed?.length; i++) {
       l.push(React.createRef());
-    });
+    }
     setChildRefs(l);
   }, [feed]);
   const canSwipe = currentIndex >= 0;
@@ -72,10 +76,31 @@ const Me: NextPage = () => {
     getFeed();
   }, []);
 
-  const [childRefs, setChildRefs]: any = useState([]);
+  const [childRefs, setChildRefs]: any = useState<any>(undefined);
 
   const swipe = async (dir: any) => {
-    await childRefs[currentIndex].current.swipe(dir);
+    if (dir === "right") {
+      console.log(feed[currentIndex]?.liked, feed[currentIndex]?.name);
+      console.log(feed);
+
+      if (feed[currentIndex]?.liked.includes(user?.uid)) {
+        onOpen();
+      }
+      await childRefs[currentIndex].current.swipe(dir);
+      await discordApi.get("/api/like/" + feed[currentIndex]?.discord, {
+        headers: {
+          allCookies: String(document.cookie),
+        },
+      });
+    } else if (dir === "left") {
+      await childRefs[currentIndex].current.swipe(dir);
+
+      await discordApi.get("/api/dislike/" + feed[currentIndex]?.discord, {
+        headers: {
+          allCookies: String(document.cookie),
+        },
+      });
+    }
 
     // Swipe the card!
   };
@@ -85,8 +110,8 @@ const Me: NextPage = () => {
     currentIndexRef.current = val;
   };
 
-  const outOfFrame = (idx: any, dir: any) => {
-    console.log(`(${idx}) left the screen!`, currentIndexRef.current);
+  const outOfFrame = async (index: any, dir: any, data: any) => {
+    //console.log(`(${idx}) left the screen!`, currentIndexRef.current);
     // handle the case in which go back is pressed before card goes outOfFrame
     //currentIndexRef.current >= idx && childRefs[idx].current.restoreCard();
     // TODO: when quickly swipe and restore multiple times the same card,
@@ -94,32 +119,19 @@ const Me: NextPage = () => {
     // during latest swipes. Only the last outOfFrame event should be considered valid
   };
 
-  const swiped = async (index: any, dir: any) => {
+  const swiped = async (index: any, dir: any, data: any) => {
     console.log(dir);
-    if (dir === "right") {
-      console.log(feed[index]);
-      if (feed[index]?.liked.includes(user?.uid)) {
-        onOpen();
-      }
-      const res = await discordApi.get("/api/like/" + feed[index].discord, {
-        headers: {
-          allCookies: String(document.cookie),
-        },
-      });
-      console.log(res);
-    } else if (dir === "left") {
-      await discordApi.get("/api/dislike/" + feed[index]?.discord, {
-        headers: {
-          allCookies: String(document.cookie),
-        },
-      });
-    }
     updateCurrentIndex(index - 1);
+    if (dir === "right") {
+      document.getElementById("right")?.click();
+    } else if (dir === "left") {
+      document.getElementById("left")?.click();
+    }
   };
 
   return (
     <>
-      {user && feed ? (
+      {user && feed && childRefs ? (
         <Box
           overflow="hidden"
           w="100vw"
@@ -310,6 +322,9 @@ const Me: NextPage = () => {
                       </Text>
                     </Flex>
                     <Box
+                      onClick={() => {
+                        window.location.href = "/api/logout";
+                      }}
                       p="2"
                       rounded="xl"
                       _hover={{ bg: "whiteAlpha.300" }}
@@ -359,7 +374,13 @@ const Me: NextPage = () => {
                       filter
                     </Button>
                   </Flex>
-                  <Modal isOpen={isOpen} onClose={onClose}>
+                  <Modal
+                    isOpen={isOpen}
+                    onClose={() => {
+                      onClose();
+                      setCopied(false);
+                    }}
+                  >
                     <ModalOverlay />
                     <ModalContent
                       bg="blackAlpha.700"
@@ -405,21 +426,29 @@ const Me: NextPage = () => {
                               mx="auto"
                               size="xl"
                               py="3"
-                              onClick={() => {}}
+                              onClick={async () => {
+                                await navigator.clipboard.writeText(
+                                  feed[currentIndex + 1]?.username
+                                );
+                                setCopied(true);
+                              }}
                               _hover={{ transform: "scale(1.05)" }}
                               _focus={{}}
                               _active={{ transform: "scale(0.9)" }}
                               fontSize="lg"
                               leftIcon={<FaEnvelope />}
                             >
-                              dm on discord
+                              {copied ? "copied username" : "send friendreq"}
                             </CustomButton>
                             <CustomButton
                               mx="auto"
                               mt="2"
                               size="xl"
                               py="3"
-                              onClick={onClose}
+                              onClick={() => {
+                                onClose();
+                                setCopied(false);
+                              }}
                               _hover={{ transform: "scale(1.05)" }}
                               _focus={{}}
                               _active={{ transform: "scale(0.9)" }}
@@ -442,24 +471,25 @@ const Me: NextPage = () => {
                     maxW="300px"
                     minW="300px"
                   >
-                    {feed.map((data: any, key: any) => (
-                      <TinderCard
-                        key={key}
-                        className="swipe"
-                        ref={childRefs[key]}
-                        onCardLeftScreen={(dir) => outOfFrame(key, dir)}
-                        onSwipe={(dir) => swiped(key, dir)}
-                        preventSwipe={["up", "down"]}
-                      >
-                        <ProfileCard
-                          data={data}
-                          currentIndex={currentIndex}
-                          swipe={swipe}
-                          index={key}
-                        />
-                      </TinderCard>
-                    ))}
-                    {isFeedOver && (
+                    {childRefs &&
+                      feed.map((data: any, key: any) => (
+                        <TinderCard
+                          key={key}
+                          className="swipe"
+                          ref={childRefs[key]}
+                          onCardLeftScreen={(dir) => outOfFrame(key, dir, data)}
+                          onSwipe={(dir) => swiped(key, dir, data)}
+                          preventSwipe={["up", "down"]}
+                        >
+                          <ProfileCard
+                            data={data}
+                            currentIndex={currentIndex}
+                            swipe={swipe}
+                            index={key}
+                          />
+                        </TinderCard>
+                      ))}
+                    {feed && isFeedOver && (
                       <motion.div
                         initial={{ y: -100, opacity: 0 }}
                         animate={{
@@ -517,6 +547,7 @@ const Me: NextPage = () => {
                         p="4"
                         rounded="full"
                         bg="whiteAlpha.400"
+                        id="left"
                         color="white"
                       >
                         <X strokeWidth="3px" />
@@ -530,6 +561,7 @@ const Me: NextPage = () => {
                         _focus={{}}
                         _active={{ transform: "scale(0.9)" }}
                         rounded="full"
+                        id="right"
                         bg="brand.blurple"
                         color="white"
                       >

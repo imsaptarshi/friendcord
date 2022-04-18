@@ -19,9 +19,12 @@ import MatchedCard from "../../components/MatchedCard";
 import { CornerLeftUp, CornerUpLeft } from "react-feather";
 import discordApi from "../../utils/discord.api";
 import { useEffect, useState } from "react";
+import { User } from "../../providers/User.provider";
+import Loading from "../../components/Loading";
 
 const Me: NextPage = () => {
   const [matches, setMatches] = useState<any>(undefined);
+  const { user } = User();
   const getMatches = async () => {
     const res = await discordApi.get("/api/matches", {
       headers: {
@@ -37,121 +40,151 @@ const Me: NextPage = () => {
   }, []);
 
   return (
-    <Box
-      overflow="hidden"
-      w="100vw"
-      h="100vh"
-      bg="brand.black"
-      color="white"
-      position="relative"
-    >
-      <Head>
-        <title>{meta.title}</title>
-      </Head>
-      <Image
-        display={{ base: "none", lg: "block" }}
-        src="/assets/background_gradient.png"
-        alt="friendcord"
-        position="absolute"
-        zIndex={0}
-        left={0}
-        top={0}
-        w="100vw"
-        h="100vh"
-      />
-      <Image
-        display={{ base: "none", md: "block", lg: "none" }}
-        src="/assets/background_gradient_tablet.png"
-        alt="friendcord"
-        position="absolute"
-        zIndex={0}
-        left={0}
-        top={0}
-        w="100vw"
-        h="100vh"
-      />
-      <Image
-        display={{ base: "block", md: "none" }}
-        src="/assets/background_gradient_mobile.png"
-        alt="friendcord"
-        position="absolute"
-        zIndex={0}
-        left={0}
-        top={0}
-        w="100vw"
-        h="100vh"
-      />
-      <Box position="relative" zIndex={2}>
-        <Flex
-          direction="column"
-          pt="10"
+    <>
+      {user && matches ? (
+        <Box
+          overflow="hidden"
           w="100vw"
           h="100vh"
-          align="center"
-          overflowY="auto"
+          bg="brand.black"
+          color="white"
+          position="relative"
         >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
+          <Head>
+            <title>{meta.title}</title>
+          </Head>
+          <Image
+            display={{ base: "none", lg: "block" }}
+            src="/assets/background_gradient.png"
+            alt="friendcord"
+            position="absolute"
+            zIndex={0}
+            left={0}
+            top={0}
+            w="100vw"
+            h="100vh"
+          />
+          <Image
+            display={{ base: "none", md: "block", lg: "none" }}
+            src="/assets/background_gradient_tablet.png"
+            alt="friendcord"
+            position="absolute"
+            zIndex={0}
+            left={0}
+            top={0}
+            w="100vw"
+            h="100vh"
+          />
+          <Image
+            display={{ base: "block", md: "none" }}
+            src="/assets/background_gradient_mobile.png"
+            alt="friendcord"
+            position="absolute"
+            zIndex={0}
+            left={0}
+            top={0}
+            w="100vw"
+            h="100vh"
+          />
+          <Box position="relative" zIndex={2}>
             <Flex
               direction="column"
+              pt="10"
+              w="100vw"
+              h="100vh"
               align="center"
-              px={{ base: "6", md: "0" }}
-              mb={{ base: "20", xl: "32" }}
-              mt="6"
+              overflowX="hidden"
+              overflowY="auto"
             >
-              <Link _hover={{}} _active={{}} _focus={{}} href="/">
-                <Box
-                  bg="transparent"
-                  _hover={{ bg: "brand.blurple" }}
-                  rounded="2xl"
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Flex
+                  direction="column"
+                  align="center"
+                  px={{ base: "6", md: "0" }}
+                  mb={{ base: "20", xl: "32" }}
+                  mt="6"
                 >
-                  <Image src="/assets/brand_logo.svg" alt="friendcord" w="24" />
+                  <Link _hover={{}} _active={{}} _focus={{}} href="/">
+                    <Box
+                      bg="transparent"
+                      _hover={{ bg: "brand.blurple" }}
+                      rounded="2xl"
+                    >
+                      <Image
+                        src="/assets/brand_logo.svg"
+                        alt="friendcord"
+                        w="24"
+                      />
+                    </Box>
+                  </Link>
+                  <Box mt="2.5">
+                    <Text
+                      fontWeight="bold"
+                      color="whiteAlpha.800"
+                      fontSize="sm"
+                      letterSpacing={0.5}
+                    >
+                      My Matches{" "}
+                      <span style={{ fontWeight: "bold" }}>{"<3"}</span>
+                    </Text>
+                  </Box>
+                  <Flex direction="column" mt="10" experimental_spaceY="5">
+                    {matches === "L + ratio + sed noises" ? (
+                      <motion.div
+                        initial={{ opacity: 0, y: -100 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1 }}
+                      >
+                        <Text
+                          fontSize="2xl"
+                          mt="40"
+                          fontWeight="bold"
+                          color="whiteAlpha.700"
+                        >
+                          {matches} {":("}
+                        </Text>
+                      </motion.div>
+                    ) : (
+                      matches?.map((data: any, key: any) => (
+                        <MatchedCard key={key} data={data} />
+                      ))
+                    )}
+                  </Flex>
+                </Flex>
+              </motion.div>
+            </Flex>
+            <Flex
+              justify="center"
+              w="full"
+              zIndex={1}
+              position="absolute"
+              bottom={12}
+            >
+              <Link _hover={{}} _active={{}} _focus={{}} href="/@feed">
+                <Box
+                  bg="whiteAlpha.800"
+                  _hover={{ transform: "scale(1.05)", bg: "white" }}
+                  _focus={{}}
+                  _active={{ transform: "scale(0.9)" }}
+                  p="4"
+                  color="brand.blurple"
+                  rounded="full"
+                  transitionDuration="200ms"
+                >
+                  <CornerUpLeft size="30px" />
                 </Box>
               </Link>
-              <Box mt="2.5">
-                <Text
-                  fontWeight="bold"
-                  color="whiteAlpha.800"
-                  fontSize="sm"
-                  letterSpacing={0.5}
-                >
-                  My Matches <span style={{ fontWeight: "bold" }}>{"<3"}</span>
-                </Text>
-              </Box>
-              <Flex direction="column" mt="10" experimental_spaceY="5">
-                <MatchedCard />
-                <MatchedCard />
-              </Flex>
             </Flex>
-          </motion.div>
-        </Flex>
-        <Flex
-          justify="center"
-          w="full"
-          zIndex={1}
-          position="absolute"
-          bottom={12}
-        >
-          <Link _hover={{}} _active={{}} _focus={{}} href="/@feed">
-            <Box
-              bg="whiteAlpha.800"
-              _hover={{ transform: "scale(1.05)", bg: "white" }}
-              _focus={{}}
-              _active={{ transform: "scale(0.9)" }}
-              p="4"
-              color="brand.blurple"
-              rounded="full"
-              transitionDuration="200ms"
-            >
-              <CornerUpLeft size="30px" />
-            </Box>
-          </Link>
-        </Flex>
-      </Box>
-    </Box>
+          </Box>
+        </Box>
+      ) : (
+        <Loading />
+      )}
+    </>
   );
 };
 
