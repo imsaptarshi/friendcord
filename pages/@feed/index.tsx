@@ -294,7 +294,7 @@ const Me: NextPage = () => {
                   align="center"
                   px={{ base: "6", md: "0" }}
                   mt={{ base: "0", md: "0", lg: "0", xl: "0" }}
-                  mb={{ base: "16", md: "12", lg: "8", xl: "24" }}
+                  mb={{ base: "24", md: "12", lg: "8", xl: "24" }}
                 >
                   <Flex align="center" experimental_spaceX="4">
                     <Avatar
