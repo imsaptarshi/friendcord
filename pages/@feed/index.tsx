@@ -205,7 +205,7 @@ const Me: NextPage = () => {
                     <Flex
                       position="absolute"
                       direction="column"
-                      bottom="10"
+                      bottom={{ base: "20", md: "10" }}
                       w="full"
                       justify="center"
                       align="center"
@@ -253,7 +253,7 @@ const Me: NextPage = () => {
                   <Flex
                     position="absolute"
                     direction="column"
-                    bottom="10"
+                    bottom={{ base: "20", md: "10" }}
                     w="full"
                     justify="center"
                     align="center"
@@ -294,7 +294,7 @@ const Me: NextPage = () => {
                   align="center"
                   px={{ base: "6", md: "0" }}
                   mt={{ base: "0", md: "0", lg: "0", xl: "0" }}
-                  mb={{ base: "10", md: "12", lg: "8", xl: "24" }}
+                  mb={{ base: "16", md: "12", lg: "8", xl: "24" }}
                 >
                   <Flex align="center" experimental_spaceX="4">
                     <Avatar

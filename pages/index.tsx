@@ -104,7 +104,7 @@ const Home: NextPage = () => {
                 <Text
                   fontWeight="normal"
                   mx="auto"
-                  mt="2"
+                  mt={{ md: "2" }}
                   fontSize={{ base: "sm", md: "xl" }}
                   color="whiteAlpha.700"
                 >
