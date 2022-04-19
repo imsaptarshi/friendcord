@@ -31,7 +31,7 @@ const Me: NextPage = () => {
         allCookies: String(document.cookie),
       },
     });
-    console.log(res.data.data);
+
     setMatches(res.data.data);
   };
 

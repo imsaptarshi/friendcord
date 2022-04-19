@@ -18,7 +18,7 @@ export default function ContextWrapper({ children }: any) {
     try {
       let _user = await getUser();
       _user = _user.data;
-      console.log(_user, user);
+
       //await getUser(_user?.user_metadata.sub);
       if (_user) {
         setUser({
@@ -38,6 +38,9 @@ export default function ContextWrapper({ children }: any) {
         });
       }
     } catch (e) {
+      if (window.location.pathname !== "/") {
+        window.location.href = "/";
+      }
       console.log(e);
     }
   };

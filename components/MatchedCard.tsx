@@ -18,7 +18,7 @@ export default function MatchedCard({ data }: any) {
       img.setAttribute("src", res);
       Vibrant.from(res).getPalette((err: any, palette: any) => {
         const col = palette.Vibrant._rgb;
-        console.log(col);
+
         setColor(`rgb(${col[0]},${col[1]},${col[2]})`);
       });
       /*const res_ = getAverageRGB(img);

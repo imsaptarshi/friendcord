@@ -47,8 +47,7 @@ const Me: NextPage = () => {
         allCookies: String(document.cookie),
       },
     });
-    console.log("last feed", feed);
-    console.log(res.data.data, "AGAIN");
+
     setFeed(undefined);
     let k: any = [];
     res.data.data.forEach((data: any) => {
@@ -94,8 +93,6 @@ const Me: NextPage = () => {
 
   const swipe = async (dir: any) => {
     if (dir === "right") {
-      console.log(feed[currentIndex]?.liked, feed[currentIndex]?.name);
-      console.log(feed);
       try {
         if (feed[currentIndex]?.liked?.includes(user?.uid)) {
           onOpen();
@@ -137,7 +134,6 @@ const Me: NextPage = () => {
   };
 
   const swiped = async (index: any, dir: any, data: any) => {
-    console.log(dir);
     setStartedScrolling(false);
     updateCurrentIndex(index - 1);
     if (dir === "right") {

@@ -34,7 +34,7 @@ export default async function handler(
     await runMiddleware(req, res, cors)
     const expireTime = 50 * 24 * 60 * 60;
     const { token } = req.query;
-    console.log(token)
+
 
     res.setHeader('Set-Cookie', serialize('jwt', String(token), {
         httpOnly: false,

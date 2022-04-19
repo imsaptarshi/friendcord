@@ -12,7 +12,6 @@ const Home: NextPage = () => {
   const { user } = User();
 
   useEffect(() => {
-    console.log(user);
     if (user) {
       if (user?.interests.length >= 3) {
         window.location.href = "/@feed";

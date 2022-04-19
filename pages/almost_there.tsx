@@ -38,7 +38,6 @@ const UserForm: NextPage = () => {
   };
 
   useEffect(() => {
-    console.log(user);
     if (user) {
       if (user?.interests.length >= 3) {
         window.location.href = "/@feed";
@@ -336,7 +335,7 @@ const UserForm: NextPage = () => {
                             setError(Error.NOT_ENOUGH_DATA);
                           } else {
                             //onboard user
-                            console.log(preferences, genders[pronoun]);
+
                             try {
                               await discordApi.post(
                                 "/api/user",

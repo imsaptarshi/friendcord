@@ -59,7 +59,7 @@ export default function ProfileCard({
         if (palette) {
           let col: any = palette.Vibrant;
           col = col._rgb;
-          console.log(col);
+
           setColor(`rgb(${col[0]},${col[1]},${col[2]})`);
         }
       });
